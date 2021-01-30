@@ -1,0 +1,22 @@
+<button onclick="vote();">vote</button>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+    function vote()
+    {
+        $.ajax({
+            url: "https://missolammaafrica.com/wp-admin/admin-ajax.php",
+            type: "POST",
+            referer: "https://missolammaafrica.com/missolammaafrica-contest/?contest=photo-detail&photo_id=8615",
+            origin: "https://missolammaafrica.com",
+            data: {
+                action: "vote_for_photo",
+                photo_id: "8615",
+                nonce_id: "26fb4b6cfc",
+                option_id: "basic"
+            },
+            success: function(response){
+                console.log(response);
+            }
+        });
+    }
+</script>

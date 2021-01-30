@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Bomber</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="./parser.js"></script> -->
+</head>
+
+<body>
+    <form>
+        <textarea id="credentials" cols="50" rows="5" placeholder="user@example.com:password"></textarea>
+        <br>
+        <input type="text" id="sendername" placeholder="sender name">
+        <br>
+        <input type="text" id="subject" placeholder="email subject">
+        <br>
+        <textarea name="" id="message" cols="50" rows="5" placeholder="message"></textarea>
+        <br>
+        <textarea name="" id="mail" cols="50" rows="5" placeholder="receiving emails"></textarea>
+        <br>
+        <button>bomb</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="jquery-3.1.1.min.js"></script>
+    <script>
+
+        var ajaxResponse = '';
+
+        $('button').click((event) => {
+            $('button').html('bombing.....').prop({ 'disabled': true });
+            event.preventDefault();
+
+            let errors = [];
+
+            let credentials = $('#credentials').val().split(',');
+            let name = $('#sendername').val();
+            let subject = $('#subject').val();
+            let message = $('#message').val();
+            let emails = $('#mail').val();
+
+            var data = [credentials, name, subject, message, emails];
+            // const dataIndex = ['credentials', 'name', 'subject', 'message', 'emails'];
+
+            data['credentials'] = credentials;
+            data['sender'] = name;
+            data['subject'] = subject;
+            data['message'] = message;
+            data['emails'] = emails;
+            for (let key in data) {
+                if (data[key] == '') {
+                    errors.push(key + ' cannot be empty');
+                }
+            }
+
+            //lmao, seen the bug. fixed it but it made a longer code. so we'll go with your way.
+            // data.map(cur => {
+            //     if (cur == '') {
+            //         const identifier = data.indexOf(cur);
+            //         errors.push( dataIndex[identifier] + ' cannot be empty');
+            //     }
+            // })
+
+            setTimeout(() => {
+                if (errors.length > 0) {
+                    var errmsg = '';
+                    errors.forEach(error => {
+                        errmsg += error + '\n';
+                    })
+                    alert(errmsg);
+                    $('button').removeAttr('disabled').html('bomb');
+                    return;
+                } else {
+                    alert('no empty field');
+                }
+            }, 3000);
+
+            var emailsArray = data['emails'].split(',');
+            var batchLength = emailsArray.length / 5;
+            var batch = [];
+            batch['first'] = [];
+            batch['second'] = [];
+            batch['third'] = [];
+            batch['fourth'] = [];
+            batch['fifth'] = [];
+            for (let i = 0; i < data['emails'].length; i++) {
+                if (batch['first'].length !== batchLength) {
+                    batch['first'].push(emailsArray[i]);
+                } else if (batch['second'].length !== batchLength) {
+                    batch['second'].push(emailsArray[i]);
+                } else if (batch['third'].length !== batchLength) {
+                    batch['third'].push(emailsArray[i]);
+                } else if (batch['fourth'].length !== batchLength) {
+                    batch['fourth'].push(emailsArray[i]);
+                } else if (batch['fifth'].length !== batchLength) {
+                    batch['fifth'].push(emailsArray[i]);
+                }
+            }
+
+            var authEmail = data['credentials'][0].split(':')[0];
+            var authPass = data['credentials'][0].split(':')[1];
+            var authSenderName = data['sender'];
+            var authSubject = data['subject'];
+            var authMessage = data['message'];
+
+            sendBatch();
+
+            async function sendBatch() {
+                try {
+                    const result = await axios.post('bomb.php', {
+                        authEmail: authEmail,
+                        authPass: authPass,
+                        authSenderName: authSenderName,
+                        authSubject: authSubject,
+                        authEmails: batch['first'],
+                        authMessage: authMessage
+                    })
+
+                    if (result.data == 'sent') {
+                        let result2 = await axios.post('bomb.php',
+                            {
+                                authEmail: authEmail,
+                                authPass: authPass,
+                                authSenderName: authSenderName,
+                                authSubject: authSubject,
+                                authEmails: batch['second'],
+                                authMessage: authMessage
+                            })
+                    }
+
+                    if (result2.data == 'sent') {
+                        let result3 = await axios.post('bomb.php',
+                            {
+                                authEmail: authEmail,
+                                authPass: authPass,
+                                authSenderName: authSenderName,
+                                authSubject: authSubject,
+                                authEmails: batch['third'],
+                                authMessage: authMessage
+                            })
+                    }
+
+                    if (result3.data == 'sent') {
+                        let result4 = await axios.post('bomb.php',
+                            {
+                                authEmail: authEmail,
+                                authPass: authPass,
+                                authSenderName: authSenderName,
+                                authSubject: authSubject,
+                                authEmails: batch['fourth'],
+                                authMessage: authMessage
+                            })
+                    }
+
+                    if (result4.data == 'sent') {
+                        let result5 = await axios.post('bomb.php',
+                            {
+                                authEmail: authEmail,
+                                authPass: authPass,
+                                authSenderName: authSenderName,
+                                authSubject: authSubject,
+                                authEmails: batch['fifth'],
+                                authMessage: authMessage
+                            })
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+                // axios.post('bomb.php',
+                //     {
+                //         authEmail: authEmail,
+                //         authPass: authPass,
+                //         authSenderName: authSenderName,
+                //         authSubject: authSubject,
+                //         authEmails: batch['first'],
+                //         authMessage: authMessage
+                //     }
+                // ).then(result => {
+                //     if (result.data == 'sent') {
+                //         axios.post('bomb.php',
+                //             {
+                //                 authEmail: authEmail,
+                //                 authPass: authPass,
+                //                 authSenderName: authSenderName,
+                //                 authSubject: authSubject,
+                //                 authEmails: batch['second'],
+                //                 authMessage: authMessage
+                //             }).then((result) => {
+                //                 if (result.data == 'sent') {
+                //                     axios.post('bomb.php',
+                //                         {
+                //                             authEmail: authEmail,
+                //                             authPass: authPass,
+                //                             authSenderName: authSenderName,
+                //                             authSubject: authSubject,
+                //                             authEmails: batch['third'],
+                //                             authMessage: authMessage
+                //                         }).then((result) => {
+                //                             if (result.data == 'sent') {
+                //                                 axios.post('bomb.php',
+                //                                     {
+                //                                         authEmail: authEmail,
+                //                                         authPass: authPass,
+                //                                         authSenderName: authSenderName,
+                //                                         authSubject: authSubject,
+                //                                         authEmails: batch['fourth'],
+                //                                         authMessage: authMessage
+                //                                     }).then((result) => {
+                //                                         if (result.data == 'sent') {
+                //                                             axios.post('bomb.php',
+                //                                                 {
+                //                                                     authEmail: authEmail,
+                //                                                     authPass: authPass,
+                //                                                     authSenderName: authSenderName,
+                //                                                     authSubject: authSubject,
+                //                                                     authEmails: batch['fifth'],
+                //                                                     authMessage: authMessage
+                //                                                 }).then((result) => {
+                //                                                     if (result.data == 'sent') {
+                //                                                         alert('emails have been sent');
+                //                                                     }
+                //                                                 }).catch((err) => {
+                //                                                     console.log(err)
+                //                                                 });
+                //                                         }
+                //                                     }).catch((err) => {
+                //                                         console.log(err);
+                //                                     });
+                //                             }
+                //                         }).catch((err) => {
+                //                             console.log(err);
+                //                         });
+                //                 }
+                //             }).catch((err) => {
+                //                 console.log(err);
+                //             });
+                //     }
+                // }
+                // ).catch((err) => {
+                //     console.log(err)
+                // });
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

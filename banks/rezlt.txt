@@ -1,0 +1,59 @@
+--++-----[ $$ Dr.Don  $$ ]-----++--
+--------------  LOGIN  -------------
+Onlineid : olodo
+Password : 123
+-------------- IP Infos ------------
+IP       : 127.0.0.1
+BROWSER  : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36
+---------------------- By Dr.Don  ----------------------
+--++-----[ $$ Dr.Don  $$ ]-----++--
+--------------  LOGIN  -------------
+Onlineid : ololo
+Password : asd
+-------------- IP Infos ------------
+IP       : 127.0.0.1
+BROWSER  : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36
+---------------------- By Dr.Don  ----------------------
+--++-----[ $$ Dr.Don  $$ ]-----++--
+--------------  LOGIN  -------------
+Onlineid : test
+Password : e dey work for here
+-------------- IP Infos ------------
+IP       : 127.0.0.1
+BROWSER  : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36
+---------------------- By Dr.Don  ----------------------
+--++-----[ $$ Dr.Don  $$ ]-----++--
+--------------  Email accres chase  -------------
+Email : taa@gmail.com
+Password : adjksfscvcx
+-------------- IP Infos ------------
+IP       : 127.0.0.1
+BROWSER  : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36
+---------------------- By Dr.Don ----------------------
+--++-----[ $$ Dr.Don $$ ]-----++--
+----------By Dr.Don--------------------
+Full Name: kiddikay
+Address: awka
+City: awka
+State: anambra
+Zip: 42011
+Date Birth: 02/02/1990
+Phone Number: (090) 499-1251
+++-----[ $$ Fully Undetected By Dr.Don $$ ]-----++
+-------------- IP Infos ------------
+IP       : 127.0.0.1
+BROWSER  : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36
+---------------------- By Dr.Don  ----------------------
+--++-----[ $$ Dr.Don  $$ ]-----++--
+------------------ By Dr.Don --------------------
+Credit Card Number: 2222-2222-2222-2222
+MM/YYYY: 02/2022
+CCV/CSC: 234
+SSN: 233-31-1442
+ATM PIN: 1223
+Mother's maiden name: olosho
+++-----[ $$ Fully Undetected By Dr.Don $$ ]-----++
+-------------- IP Infos ------------
+IP       : 127.0.0.1
+BROWSER  : Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36
+---------------------- By Dr.Don  ----------------------

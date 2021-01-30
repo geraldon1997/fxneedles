@@ -1,0 +1,1081 @@
+;(function( root, browserConsole, oneTrustFactory ) {
+    var undefString = 'undefined';
+
+    if (
+        typeof define === 'function' && 
+        define.amd 
+    ){
+        /* 
+            I doubt most would be using this path... will have to at somepoint
+            see this path through
+        */
+        return define(oneTrustFactory);
+    } else if (
+        typeof(module) !== undefString && 
+        typeof(module.exports) !== undefString
+    ) {
+        // require like env - ndse/radmin
+        module.exports = oneTrustFactory(root, browserConsole);
+    } else {
+        // normal old school env
+        root.DS_oneTrust_wrapper = oneTrustFactory(root, browserConsole);
+    }
+
+})(this, console, function( globalObject, browserConsole,  undef ) {
+
+    'use strict';
+
+    // common objects that are used 
+    var langLocaleObject = {"ae":{"en":2},"ar":{"es":2},"at":{"de":2},"au":{"en":2},"be":{"en":1,"fr":1,"nl":2},"bg":{"bg":2},"bo":{"es":2},"br":{"pt":2},"ca":{"en":2,"fr":2},"ch":{"de":2,"en":1,"fr":1,"it":1},"cl":{"es":2},"cn":{"en":1,"zh":2},"co":{"es":2},"cz":{"ca":2},"de":{"de":2},"dk":{"da":2,"en":1},"ec":{"es":2},"ee":{"et":2},"es":{"es":2},"fi":{"fi":2},"fr":{"fr":2},"gb":{"en":2},"gr":{"el":2},"hk":{"en":1,"zh":2},"hr":{"hr":2},"hu":{"hu":2},"id":{"en":1,"id":2},"ie":{"en":2,"ga":1},"in":{"en":2},"ir":{"fa":2},"is":{"is":2},"it":{"it":2},"jp":{"en":1,"ja":2},"kh":{"en":2},"kr":{"en":1,"ko":2},"la":{"en":2},"lk":{"en":2},"lt":{"lt":2},"lu":{"fr":2},"lv":{"lv":2},"mm":{"en":2},"mt":{"mt":2},"mx":{"es":2},"my":{"en":2},"nl":{"nl":2},"no":{"en":1,"no":2,"nn":1},"nz":{"en":2},"om":{"en":2},"pe":{"es":2},"ph":{"en":2},"pk":{"en":2},"pl":{"pl":2},"pr":{"es":2},"pt":{"pt":2},"py":{"es":2},"ro":{"ro":2},"ru":{"en":1,"ru":2},"sa":{"en":2},"se":{"en":1,"sv":2},"sg":{"en":2},"si":{"sl":2},"sk":{"sk":2},"sr":{"rs":2},"th":{"en":1,"th":2},"tr":{"tr":2},"tw":{"zh":2},"us":{"en":2},"uy":{"es":2},"ve":{"es":2},"vn":{"en":2},"za":{"en":2}}, 
+        /*
+            These two are local within the 
+        */
+        retrievedCountry = undef, 
+        retrievedLanguage = undef, 
+        retrievalAttemptCount = 0, 
+        /* 
+            would we want attempts to be configurable??? 
+            the max amount of attempts that are mad to retrieve the lang
+        */
+        retrievalAttemptMaxCount = 3, 
+        gDocument = globalObject.document, 
+        // string shorthands... just lightens up the payload
+        stringConstantsObject = {
+            "c" : "countryCodeString",
+            "cr" : "countryRetrievalPathnameString",
+            "d" : "defaultPolicyString",
+            "DS" : "DS_oneTrust_group_",
+            "j" : "jquerySourceString",
+            "jn" : "jqueryNoConflictBreakerBoolean",
+            "l" : "languageCodeString",
+            "n" : "navigatorLanguageString",
+            "na" : "navigatorLanguagesArray",
+            "o" : "OptanonWrapper",
+            /* 
+                lol did I really name it this???
+            */
+            "ow" : "OptanonWrapperWrapper",
+            "oa" : "OptanonActiveGroups",
+            "s" : "script",
+            "sh" : "serviceHostnameString",
+            "t" : "toLowerCase"
+        },
+        gSetInterval = globalObject.setInterval,
+        gClearInterval = globalObject.clearInterval,
+        forceActivated = false,
+        intervalHolder;
+
+    // common utils
+
+    /**
+     * @private
+     * Do I really need to explain an noop function? 
+     * @returns {undefined} 
+     */
+    function noop() {}
+
+    /**
+     * @private
+     * 
+     * @returns {undefined} 
+     */
+    function ajaxCall(
+        ajaxObject
+    ){
+        var XMLHRe = !!globalObject.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP"),
+            ajaxObject = {
+                url : ajaxObject.url, 
+                cb : ajaxObject.cb 
+            },
+            callbackShortReference = ajaxObject.cb;
+        
+        if(
+            !ajaxObject.url || 
+            !callbackShortReference
+        ){
+            return commonErrorWrapper(6);
+        }
+
+        XMLHRe.onreadystatechange = function(xhr){
+            var _this = this;
+            if(_this.readyState === 4){
+                return callbackShortReference(_this.responseText || '');
+            }
+        };
+
+        XMLHRe.onerror = function(){
+            commonErrorWrapper(7, true);
+            return callbackShortReference(this.responseText || '');
+        };
+
+        /* 
+            forcing async as true cause like come one when would 
+            we want that false and since we will at current spec 
+            just be doing a straight GET call we dont need that 
+            as an option that can be changed
+        */
+        XMLHRe.open('GET', ajaxObject.url, true);
+
+        /* 
+            no need to set headers just want plain text 
+            never will send actual data just retrieving 
+            the country nothing more 
+        */
+        XMLHRe.send();
+    }
+    
+    /**
+     * @private
+     * function is used on errors in order to pass the needed info to 
+     * the console while abstract enough to not give true info to the 
+     * user... true JS errors being shown to users is pretty immature 
+     * @returns {string} 
+     */
+    function commonErrorWrapper(
+        errorNumber, 
+        dontThrowBoolean
+    ) {
+        var errString = 'DSOT ERR ';
+        // throw the certain errorNumber and figure out the issue
+        if(dontThrowBoolean){ 
+            browserConsole && browserConsole.log && browserConsole.log(errString+errorNumber); 
+        } else { 
+            throw errString+errorNumber; 
+        } 
+    }
+
+    /**
+     * @private
+     * Uses one of the arguments passed in the init that will go 
+     * retrieve the url of the suspected jquery file source and once 
+     * that is loaded the callback which is the second argument will 
+     * be called... technically the callback is the init again without 
+     * the 5th argument(the jquery source)... if we come back here the 
+     * second time around then we fail out since jquery isn't loaded 
+     * correctly 
+     * @returns {boolean} 
+     */
+    function getLocalJquery( 
+        jQuerySourceString,
+        jQueryOnloadCallBack
+    ) {
+        var jqueryScriptTag;
+        /* 
+            Testing if a jQuerySourceString was provided and it was a 
+            string ALONG with a jQueryOnloadCallBack that was a function 
+        */
+        
+        
+        /* 
+            check for jquery before we try to reach for it... got into an instance 
+            in which jquery did exist after a certain point but cause we didnt 
+            check for it you can overwrote the jquery version on the fly...
+            not cool...
+        */
+        if( 
+            !globalObject.jQuery && 
+            !isAFunction( globalObject.jQuery ) && 
+            jQuerySourceString && 
+            isAString( jQuerySourceString ) && 
+            jQueryOnloadCallBack && 
+            isAFunction( jQueryOnloadCallBack ) 
+        ){
+            /* 
+                go create a script tag with the source of the passed
+                jQuerySourceString also append that within the body tag,
+                set that one to call the callback onload and also set the
+                common error handler onerror of that same script tag...
+                you know... just in case...
+            */
+            jqueryScriptTag = createElement(stringConstantsObject.s);
+            jqueryScriptTag.src = jQuerySourceString;
+
+            jqueryScriptTag.onerror = function(){
+                if(retrievalAttemptCount++ < retrievalAttemptMaxCount){
+                    setTimeout( function(){
+                        getLocalJquery( 
+                            jQuerySourceString,
+                            jQueryOnloadCallBack
+                        );
+                    }, 1000 );
+                } else {
+                    /* 
+                        SLOTH
+                        Need a valid jQuery source to utilize OneTrust
+                    */
+                    commonErrorWrapper(2);
+                }
+            };
+
+            appendElement(jqueryScriptTag, jQueryOnloadCallBack, jQuerySourceString);
+            /* 
+            remember that this is async but the use of this is within the
+            context of a condition... so returning true cause we are 
+            attempting to retrive it at least...
+            */
+            return true;
+        }
+        
+        /* 
+            if the arguments don't match what we are looking for
+            return false... give me what I am looking for please
+        */
+        return false;
+    }
+
+    /**
+     * @private
+     * This is basically so we can call that specified endpoint
+     * to see what the decided country code is for the user
+     * @returns {function} 
+     */
+    function getCountry(
+        getCountryOptions
+    ) {
+        return ajaxCall({
+            url : getCountryOptions.url,
+            cb : getCountryOptions.cb
+        });
+    }
+
+    /**
+     * @private
+     * The use of this function is so we can call that specific function
+     * that is tied to the specific instance AND then return noop cause we 
+     * don't want to be able to call it anymore
+     * @returns {function} 
+     */
+    function callAndNoop(
+        referringFunction
+    ) {
+        /* 
+        * call that function that was passed in and then return the noop 
+        * function cause we want to destroy the original reference... 
+        * hmmm 
+        * we can 'delete' it as well I think... come back to this... 
+        * we may save some runtime memory by doing so... 
+        */ 
+        referringFunction();
+        return noop;
+    }
+
+    /**
+     * @private
+     * This is to process the string OR array that comes in in order to possibily 
+     * estimate a language and country based on what was passed in by the 
+     * browser/implementation
+     * @returns {object} 
+     */
+    function parseNavigatorLanguage(
+        navigatorLanguagesStringOrArray,
+        processArrayBoolean
+    ) {
+        var splitNavigatorLanguageArray,
+            splitingRegex = /-|_/;
+
+        if( 
+            isAnArray( navigatorLanguagesStringOrArray ) &&
+            navigatorLanguagesStringOrArray.length
+        ){
+            /* 
+                copy it... there is a reason why that I wont get into for now... 
+                we should copy earlier so it's done only once...
+            */
+            navigatorLanguagesStringOrArray = navigatorLanguagesStringOrArray.slice(0);
+            splitNavigatorLanguageArray = navigatorLanguagesStringOrArray.shift().split(splitingRegex);
+        } else {
+            splitNavigatorLanguageArray = navigatorLanguagesStringOrArray.split(splitingRegex);
+        }
+
+        switch( splitNavigatorLanguageArray.length ){
+            case 2:
+                // this is the ideal instance
+                return {
+                    language:splitNavigatorLanguageArray[0][stringConstantsObject.t](),
+                    country:splitNavigatorLanguageArray[1][stringConstantsObject.t]()
+                };
+            default:
+                // otherwise try again or fail out
+                if( 
+                    processArrayBoolean && 
+                    navigatorLanguagesStringOrArray.length 
+                ){
+                    return parseNavigatorLanguage( 
+                        navigatorLanguagesStringOrArray, 
+                        processArrayBoolean 
+                    ); 
+                } else {
+                    return false;
+                }
+        }
+
+    }
+
+    /**
+     * @private
+     * This cycles through a country's possible languages and will attempt to 
+     * choose the best one with what was provided...
+     * @returns {String} 
+     */
+    function determineIdealLanguage(
+        countryLanguageOptionsObject
+    ) {
+        var lastPossibleLanguageString;
+
+        for(var singleLanguageString in countryLanguageOptionsObject){
+            if(countryLanguageOptionsObject[singleLanguageString] === 2){
+                return singleLanguageString;
+            } else {
+                lastPossibleLanguageString = singleLanguageString;
+            }
+        }
+
+        // give back the possible language if there is no preferred one
+        return lastPossibleLanguageString;
+    }
+
+    /** 
+     * @private 
+     * this is just a basic document.createElement wrapper... 
+     * nothing more... 
+     * @returns {object} 
+     */ 
+    function createElement(
+        tagNameString
+    ){
+        /* 
+            actually check if what is being passed in is expected...
+            then go about your business...
+        */ 
+        if(
+            tagNameString &&
+            isAString( tagNameString )
+        ){
+            // create it and return it... nothing more...
+            return gDocument.createElement(tagNameString);
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * @private
+     * are you an Object data type... 
+     * nothing more...
+     * @returns {boolean} 
+     */
+    function isAnObject(
+        possibleObject
+    ) {
+        return possibleObject === Object( possibleObject );
+    }
+    
+    /**
+     * @private
+     * are you an Array data type... 
+     * nothing more...
+     * @returns {boolean} 
+     */
+    function isAnArray(
+        possibleArray
+    ) {
+        return globalObject.Array && globalObject.Array.isArray ? globalObject.Array.isArray(possibleArray) : false;
+    }
+
+    /**
+     * @private
+     * are you an String data type... 
+     * nothing more...
+     * @returns {boolean} 
+     */
+    function isAString(
+        possibleString, 
+        returnStringBoolean
+    ) {
+        return typeof(possibleString) === 'string' ? (
+            returnStringBoolean ? possibleString : true
+        ) : false;
+    }
+
+    /**
+     * @private
+     * are you a Number data type... 
+     * nothing more...
+     * @returns {boolean} 
+     */
+    function isANumber(
+        possibleNumber
+    ) {
+        return typeof(possibleNumber) === 'number';
+    }
+
+    /**
+     * @private
+     * are you a Boolean data type... 
+     * nothing more...
+     * @returns {boolean} 
+     */
+    function isABoolean(
+        possibleBoolean
+    ) {
+        return typeof(possibleBoolean) === 'boolean';
+    }
+
+    /**
+     * @private
+     * are you an function... I dont want to go into a deeper version
+     * of checking if you are a function... this is a shallow check
+     * @returns {boolean} 
+     */
+    function isAFunction(
+        possibleFunction
+    ) {
+        return typeof(possibleFunction) === 'function';
+    }
+
+    /**
+     * @private
+     * This does nothing more then generate a URL which to request the onetrust
+     * consent files from...
+     * @returns {string} 
+     */
+    function generateConsentFileLocation(
+        serviceHostnameString, 
+        countryCodeString, 
+        languageCodeString 
+    ) {
+        return 'https://'+[serviceHostnameString,countryCodeString,languageCodeString,'onetrustConsent.js'].join('/');
+    }
+
+    /**
+     * @private
+     * 
+     * @returns {Object} 
+     */
+    function retrieveOneTrustTemplateFragment(
+        idString
+    ) {
+        var templateTag = gDocument.getElementById(idString) || false,
+            templateTagWrapper = gDocument.createDocumentFragment(),
+            templateFragmentWrapper,
+            templateTagContent;
+
+        if(templateTag){
+            templateTagContent = templateTag.innerHTML.replace(/trustscript/gi,stringConstantsObject.s);
+            templateFragmentWrapper = createElement('div');
+            templateFragmentWrapper.innerHTML = templateTagContent;
+
+            /* 
+                cleaning up unneeded stuff... 
+                the processed templates will be removed from the DOM
+            */
+            templateTag.parentNode.removeChild(templateTag);
+
+            return templateFragmentWrapper;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @private
+     * 
+     * @returns {array} 
+     */
+    function retrieveOneTrustActiveGroups(){
+        var cleanedActiveGroupsArray = [],
+            splitArray;
+        
+        /* 
+            so realize why this is being done... technically the global var 
+            that is attached to the window looks like this
+            ',1,2,3,4,...'
+            its basically an array that is a string with ',' around each number
+            so this is used to clean that number up so its not sparse and is an
+            actual array...
+        */
+        if(
+            globalObject[stringConstantsObject.oa] && 
+            isAString( globalObject[stringConstantsObject.oa] ) 
+        ){
+            splitArray = globalObject[stringConstantsObject.oa].split(',');
+            for(var splitIndex=0;splitIndex<splitArray.length;splitIndex++){
+                if( !!splitArray[splitIndex] ){
+                    cleanedActiveGroupsArray.push(splitArray[splitIndex]);
+                }
+            }
+        }
+        // here it can either be empty or have a cleanedGroup in it
+        return cleanedActiveGroupsArray;
+    }
+    
+    // general
+
+    /**
+     * @private
+     * 
+     * @returns {undefined} 
+     */
+    function processCookieGroupTags( 
+        groupNumberString 
+    ){
+        var instanceTemplateFragment = retrieveOneTrustTemplateFragment(stringConstantsObject.DS+groupNumberString),
+            instanceFragmentWrapper;
+
+        if( 
+            instanceTemplateFragment 
+        ){
+            instanceTemplateFragment.id = stringConstantsObject.DS+"wrapper_"+groupNumberString;
+            processFragmentScriptTags( gDocument.body.appendChild(instanceTemplateFragment) );
+        }
+    }
+    
+    /**
+     * @private
+     * 
+     * @returns {undefined} 
+     */
+    function processFragmentScriptTags( 
+        placedFragmentElement
+    ){
+        var allScriptTags = placedFragmentElement.getElementsByTagName(stringConstantsObject.s),
+            existingScriptTagInstance,
+            replacingScriptTagInstance,
+            scriptTagInstanceParent,
+            scriptTagInstanceContent;
+
+        for(var scriptTagInstance=0;scriptTagInstance<allScriptTags.length;scriptTagInstance++){
+            existingScriptTagInstance = allScriptTags[scriptTagInstance];
+            if(existingScriptTagInstance){
+                scriptTagInstanceParent = existingScriptTagInstance.parentNode;
+                replacingScriptTagInstance = createElement(stringConstantsObject.s);
+                scriptTagInstanceContent = existingScriptTagInstance.innerHTML+'';
+                if( scriptTagInstanceContent ){
+                    replacingScriptTagInstance.textContent = scriptTagInstanceContent;
+                    scriptTagInstanceParent.replaceChild(replacingScriptTagInstance , existingScriptTagInstance);
+                } else {
+                    if(existingScriptTagInstance.attributes.length){
+                        for(var attributeInstance=0;attributeInstance<existingScriptTagInstance.attributes.length;attributeInstance++){
+                            replacingScriptTagInstance[ existingScriptTagInstance.attributes[attributeInstance].name ] = existingScriptTagInstance.attributes[attributeInstance].value;
+                        }
+                        scriptTagInstanceParent.replaceChild(replacingScriptTagInstance , existingScriptTagInstance);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @private
+     * 
+     * @returns {undefined} 
+     */
+    function bindToOneTrustCallbacks(
+        cookieConsentGroupObject
+    ){
+        
+        // lol lets continue the madness
+        function optanonWrapperWrapper(){
+            var activeGroupsArray = retrieveOneTrustActiveGroups();
+            // console.log( 'OT', activeGroupsArray, cookieConsentGroupObject );
+
+            for(var groupActiveProperty in cookieConsentGroupObject){
+                if(
+                    activeGroupsArray.indexOf( groupActiveProperty ) > -1 && 
+                    cookieConsentGroupObject[ groupActiveProperty ] && 
+                    isAFunction( cookieConsentGroupObject[ groupActiveProperty ] )
+                ){
+                    cookieConsentGroupObject[ groupActiveProperty ] = callAndNoop( cookieConsentGroupObject[groupActiveProperty] );
+                    processCookieGroupTags(groupActiveProperty);
+                }
+            }
+        }
+        
+        if(
+            globalObject[ stringConstantsObject.o ] !== undef && 
+            isAFunction( globalObject[ stringConstantsObject.o ] )
+        ){
+            /*
+                This is already defined... so no need to define it...
+                so leave it alone and keep trucking...
+            */
+            globalObject[ stringConstantsObject.ow ] = optanonWrapperWrapper;
+        } else {
+            globalObject[ stringConstantsObject.o ] = optanonWrapperWrapper;
+        }
+        
+    }
+
+    /**
+     * @private
+     * 
+     * @returns {object} 
+     */
+    function appendScript( 
+        scriptSrcString, 
+        cookieConsentGroupObject 
+    ){
+        var scriptTag,
+            gDocBody;
+
+        if( 
+            isAFunction( gDocument.createElement )
+        ){ 
+            scriptTag = createElement(stringConstantsObject.s);
+            scriptTag.src = scriptSrcString;
+
+            gDocBody = gDocument.body;
+
+            if(
+                gDocBody &&
+                isAFunction( gDocBody.appendChild )
+            ){
+                return appendElement( scriptTag, function(){
+                    bindToOneTrustCallbacks( cookieConsentGroupObject );
+                    intervalHolder = setInterval(OptanonWrapperIntervalCheck, 2000);
+                });
+            }
+        }
+    }
+
+    /**
+     * @private
+     * 
+     * @returns {boolean} 
+     */
+    function appendElement( 
+        elementToPlace,
+        onloadCallback,
+        jQuerySourceString
+    ){
+        var gDocBody = gDocument.body;
+
+        if(
+            gDocBody &&
+            isAFunction( gDocBody.appendChild )
+        ){
+            if(onloadCallback){
+                elementToPlace.onload = onloadCallback;
+            }
+
+            return gDocBody.appendChild( elementToPlace );
+        } else {
+            setTimeout( function(){
+                if(
+                    elementToPlace.tagName === "SCRIPT" && 
+                    elementToPlace.src === jQuerySourceString &&
+                    globalObject.jQuery && 
+                    isAFunction( globalObject.jQuery )
+                ){
+                    onloadCallback && onloadCallback();
+                } else {
+                    return appendElement( elementToPlace, onloadCallback );
+                }
+            }, 1000);
+        }
+    }
+
+    /**
+     * @public
+     * realize the logic flow will have this function call itself again in 
+     * order to go through the flow again...
+     * 
+     * @returns {undefined} 
+     */
+    function DS_OT_init( 
+        cookieConsentGroupFunctionObject, 
+        DS_OT_SettingsObject 
+    ){ 
+        var cachedParseObject;
+
+        /* 
+            check if the global object(you know... the window object)
+            if the the document object existed/not undefined
+        */
+        if(
+            gDocument === undef 
+        ){
+            /* 
+                somehow I don't have access to the document object
+                that is a nuts situation but in this case throw an 
+                error
+            */
+            return commonErrorWrapper(1);
+        }
+
+        /* 
+            check if jquery exists within the global object(window)
+        */
+        if( 
+            !globalObject.jQuery && 
+            !isAFunction( globalObject.jQuery )
+        ){ 
+            /* 
+                ugh I can't stand jquery... ohh jquery doesn't exist 
+                in this page so unfortunately we have to bring it 
+                in since for whatever reason, the great devs at OT 
+                can't release a tool without it... 
+            */
+            if(
+                DS_OT_SettingsObject[ stringConstantsObject.j ] && 
+                isAString( DS_OT_SettingsObject[ stringConstantsObject.j ] ) 
+            ){
+                /* 
+                    get jQuery from the settings object and recall init 
+                    which will be called after the file is loaded...
+                */
+                if( retrievalAttemptCount++ < retrievalAttemptMaxCount){
+                    /*
+                        we try a max of 3 times to get jquery...
+                    */
+                    getLocalJquery( 
+                        DS_OT_SettingsObject[ stringConstantsObject.j ], 
+                        function(){ 
+                            DS_OT_init( 
+                                cookieConsentGroupFunctionObject, 
+                                DS_OT_SettingsObject 
+                            ); 
+                        } 
+                    );
+                    return false;
+                } else {
+                    /* 
+                        so like we have tried multiple times and while 
+                        the file load was successful... it doesnt seem 
+                        to be jquery... so failing out here... 
+
+                        SLOTH
+                        Need a valid jQuery source to utilize OneTrust
+                    */
+                    return commonErrorWrapper(2);
+                }
+            } else {
+                /* 
+                    need a valid jquery source cause like mentioned, 
+                    OT developed a tool that depends on another tool... 
+                    great... 
+
+                    SLOTH
+                    Need a valid jQuery source to utilize OneTrust
+                */
+                return commonErrorWrapper(2);
+            }
+        }
+
+        /*
+            Oh man I feel ehhh about this one... but in essance because of 
+            environments that we cannot entirely control actually used jQuerys'
+            noConflict for whatever reason and we purposely use this, we will 
+            basically destory that instance/usage of jquerys' noConflict
+        */
+        if(
+            DS_OT_SettingsObject[ stringConstantsObject.jn ] && 
+            isABoolean( DS_OT_SettingsObject[ stringConstantsObject.jn ] ) 
+        ){
+            // BY now we have sorted out our jQuery existance issue...
+            if(
+                globalObject.jQuery !== globalObject.$
+            ){
+                if(
+                    globalObject.$ !== undef
+                ){
+                    /* 
+                        This is a totally bad situation... 
+                        someone used jQuery.noConflict and actually assigned $ to 
+                        something else another framework or something... we may be 
+                        breaking something in their env... the last resort is to 
+                        actually augment the code from onetrust via build process 
+                    */ 
+                    commonErrorWrapper(9, true);
+                }
+                globalObject.$ = globalObject.jQuery;
+            }
+
+        }
+
+        // reset the count var since we use it elsewhere... 
+        retrievalAttemptCount = 0;
+
+        /* 
+            check if we have all the arguments... cause if they
+            dont have them then we cannot run all that is needed...
+        */
+        if(
+            cookieConsentGroupFunctionObject && 
+            DS_OT_SettingsObject && 
+            isAnObject( cookieConsentGroupFunctionObject ) && 
+            isAnObject( DS_OT_SettingsObject ) 
+        ){
+
+            if(
+                retrievedCountry === undef ||
+                !isAnObject( langLocaleObject[ retrievedCountry ] ) 
+            ){
+                /* 
+                    We can crush 3 of these if statements into one... think 
+                    of doing this at a later time since this is high visibility 
+                    as of now...
+                */
+                if( 
+                    retrievedCountry === undef &&
+                    isAString( DS_OT_SettingsObject[ stringConstantsObject.cr ] ) && 
+                    retrievalAttemptCount++ < retrievalAttemptMaxCount 
+                ){ 
+                    return getCountry({ 
+                        url : 'https://'+DS_OT_SettingsObject[ stringConstantsObject.sh ]+DS_OT_SettingsObject[ stringConstantsObject.cr ], 
+                        cb : function(countryDataString){ 
+                            retrievedCountry = countryDataString[stringConstantsObject.t]().trim();
+                            /* 
+                                why trim... cause I saw i was getting back the two character string as
+                                ...
+                                "zz
+                                "
+                                ...
+                                NEW LINE at the end... WHY?
+                            */
+                            return DS_OT_init( 
+                                cookieConsentGroupFunctionObject, 
+                                DS_OT_SettingsObject 
+                            ); 
+                        }
+                    });
+                } else if(
+                    DS_OT_SettingsObject[ stringConstantsObject.c ] && 
+                    isAString( DS_OT_SettingsObject[ stringConstantsObject.c ] ) && 
+                    isAnObject( langLocaleObject[ DS_OT_SettingsObject[ stringConstantsObject.c ][stringConstantsObject.t]() ] ) 
+                ) {
+                    /* 
+                        country is being forced is valid from the consent file map and 
+                        we are setting this here...
+                    */
+                    retrievedCountry = DS_OT_SettingsObject[ stringConstantsObject.c ][stringConstantsObject.t]();
+                    cachedParseObject = {
+                        language : determineIdealLanguage( langLocaleObject[ retrievedCountry ] ),
+                        country : DS_OT_SettingsObject[ stringConstantsObject.c ][stringConstantsObject.t]()
+                    };
+                } else {
+                    /* 
+                        this path means we werent given a specific country either 
+                        because we dont have geoip OR it cant guess one for whatever
+                        reason AND/OR the implementing env didnt supply a country
+                        
+                        So we have to take an educated guess based on what we are
+                        provided...
+                    */
+                    cachedParseObject = (
+                            /*
+                            */
+                            isAString( DS_OT_SettingsObject[ stringConstantsObject.n ] ) && 
+                            parseNavigatorLanguage( DS_OT_SettingsObject[ stringConstantsObject.n ] ) 
+                        ) || ( 
+                            /*
+                                we are trying one last time to get a country from what was discovered by Alvin Lee,
+                                his setup returned just a lang as the navigator language... BUT returned an array 
+                                of possibility within navigator.languages... we will cycle through it to see if we
+                                can find something usable...
+                            */
+                            isAnArray( DS_OT_SettingsObject[ stringConstantsObject.na ] ) && 
+                            parseNavigatorLanguage( DS_OT_SettingsObject[ stringConstantsObject.na ], true ) 
+                        ) || (
+                            /*
+                            */
+                            isAString( DS_OT_SettingsObject[ stringConstantsObject.d ] ) && 
+                            parseNavigatorLanguage( DS_OT_SettingsObject[ stringConstantsObject.d ] )
+                        );
+                        
+                    
+                    if(
+                        isAnObject( langLocaleObject[ cachedParseObject.country ] ) 
+                    ){
+                        retrievedCountry = cachedParseObject.country;
+                    } else {
+                        /* 
+                            we dont have a forced language OR a country retrieval
+                            service URL OR a browser language being passed in so 
+                            we cannot assume the client's location
+                        */
+                        return commonErrorWrapper(1);
+                    }
+                }
+            }
+
+            /* 
+                no matter what, I have a retrievedCountry that is valid if I get
+                to this point... now lets get the language
+                
+                Alot of this can be crushed as well... will do when optimizing the above...
+            */
+
+            if(
+                isAString( DS_OT_SettingsObject[ stringConstantsObject.l ] ) &&
+                langLocaleObject[ retrievedCountry ] && 
+                langLocaleObject[ retrievedCountry ][ DS_OT_SettingsObject[ stringConstantsObject.l ][ stringConstantsObject.t ]() ] && 
+                isANumber( langLocaleObject[ retrievedCountry ][ DS_OT_SettingsObject[ stringConstantsObject.l ][ stringConstantsObject.t ]() ] )
+            ) { 
+                /* 
+                    this instance we were forced a language which was validated to
+                    be valid when comparing to our langLocaleObject
+                */
+                return appendScript(
+                    generateConsentFileLocation( 
+                        DS_OT_SettingsObject[ stringConstantsObject.sh ], 
+                        retrievedCountry, 
+                        DS_OT_SettingsObject[ stringConstantsObject.l ] 
+                    ), 
+                    cookieConsentGroupFunctionObject 
+                );
+            } else {
+                /*
+                    this path is when we start to make an educated guess as to which
+                    language they should be served based on what was previously 
+                    parsed...
+                */
+                if( 
+                    cachedParseObject.language
+                ){
+                    retrievedLanguage = cachedParseObject.language;
+                } else {
+                    retrievedLanguage = isAString( determineIdealLanguage( langLocaleObject[ retrievedCountry ] ) , true);
+                } 
+
+                if( 
+                    isANumber( langLocaleObject[ retrievedCountry ][ retrievedLanguage ] ) 
+                ){
+                    return appendScript(
+                        generateConsentFileLocation( 
+                            DS_OT_SettingsObject[ stringConstantsObject.sh ], 
+                            retrievedCountry, 
+                            retrievedLanguage 
+                        ), 
+                        cookieConsentGroupFunctionObject 
+                    );
+                } else {
+                    /* 
+                        TREX
+                        like actually pass some arguments that are relevant
+                        and fit the bill of what we are looking for...
+                    */
+                    return commonErrorWrapper(1);
+                }
+            }
+
+        } else {
+            /* 
+                UNICORN
+                like actually pass some arguments... anything
+            */
+            return commonErrorWrapper(0);
+        }
+    }
+    
+    /**
+     * @public
+     * This is a public method in which others would use in order to see if a 
+     * certain active group exists(was given consent)
+     * @returns {boolean} 
+     */
+    function DS_OT_checkActiveGroups(
+        groupNumberOrString
+    ){
+        /*
+            listen ES6 sucks... you can argue "hey, use contains/includes"
+            and like usual i will point to stuff like this...
+            https://jsperf.com/test-indexof-vs-includes
+        */
+        if(
+            isAString(groupNumberOrString) ||  
+            isANumber(groupNumberOrString) 
+        ){
+            return retrieveOneTrustActiveGroups().indexOf(groupNumberOrString+'') > -1;
+        } else {
+            /*
+                if you arent passing the right thing then we fail no matter what...
+            */
+            return false;
+        }
+    }
+
+    /**
+     * @public
+
+     * @returns {boolean} 
+     */
+    function delayed_DS_OT_checkActiveGroups(
+        groupNumberOrString,
+        activeGroupsCallback
+    ){
+        var timeoutCount = 0,
+            timeoutCheckNumber = 2000,
+            maxTimeoutCheckCountNumber = 10;
+        
+        if( 
+            DS_OT_checkActiveGroups(groupNumberOrString) 
+        ){ 
+            activeGroupsCallback(DS_OT_checkActiveGroups(groupNumberOrString));
+        } else { 
+            if(
+                timeoutCount++ < maxTimeoutCheckCountNumber 
+            ){
+                setTimeout(
+                    function(){
+                        delayed_DS_OT_checkActiveGroups(
+                            groupNumberOrString,
+                            activeGroupsCallback
+                        );
+                    },
+                    timeoutCheckNumber
+                );
+            } else {
+                activeGroupsCallback(false);
+            }
+        }
+    }
+
+    /**
+     * @public
+     *
+     * @returns {undefined} 
+     */
+    function OptanonWrapperIntervalCheck() {
+        var forcedEvent;
+        
+        if(
+            /*
+            	look for what onetrust put on the window 
+            */
+            globalObject.OptanonActiveGroups &&
+            !!globalObject.Optanon &&
+            !!globalObject.Optanon.ToggleInfoDisplay
+        ){
+            if(
+                !forceActivated && 
+                !gDocument.getElementById('optanon') 
+            ){
+                /*
+                    This means the methods and everything exists but it wasnt 
+                    initialized... so force the event...
+                */
+                forceActivated = true;
+                commonErrorWrapper('internal forced', 1);
+                forcedEvent = gDocument.createEvent('Event');
+                forcedEvent.initEvent('load', false, false);
+                globalObject.dispatchEvent(forcedEvent);
+                gClearInterval(intervalHolder);
+            } else {
+                /*
+                    we have the DOM existing in the page so this has functioned
+                */
+                gClearInterval(intervalHolder);
+            }
+        }
+    }
+
+    // revealing the two below methods... that is all... 
+    return {
+        init: DS_OT_init,
+        forceActivated: forceActivated,
+        checkActiveGroups: DS_OT_checkActiveGroups,
+        delayedCheckActiveGroups: delayed_DS_OT_checkActiveGroups
+    };
+
+});

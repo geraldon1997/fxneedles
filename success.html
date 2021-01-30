@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUCCESSFUL</title>
+    <style>
+        .success-box{
+            background-color: whitesmoke;
+            width: 100%;
+            margin: 0;
+        }
+        .display-box{
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: rgb(142, 201, 142);
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-box">
+        <div class="display-box">
+            <h1>Update successful</h1>
+            <h4>you will be redirected in .... </h4>
+            <h3></h3>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+
+    var counter;
+    var sec = 4;
+    
+    if (sec > 0) {
+        
+        setTimeout(() => {
+            counter = setInterval(timer, 1000);
+        }, 500);
+        
+    }
+
+    function timer(){
+    if (sec === -1) {
+        clearInterval(counter);
+        window.location = window.location.hash.split('#')[1];
+    } else {
+        $('h3').html(sec)
+        sec--;
+    }
+}
+
+</script>
+
+</html>

